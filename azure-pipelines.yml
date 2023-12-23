@@ -28,7 +28,7 @@ stages:
       - job: Build
         displayName: Build
         pool:
-          image: "$(vmImageName)"
+          vmImage: "$(vmImageName)"
         steps:
           - task: AzureResourceGroupDeployment@2
             displayName: "Azure Container Registry Deployment"
