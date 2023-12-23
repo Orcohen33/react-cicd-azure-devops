@@ -4,9 +4,6 @@
 
 trigger:
   - main
-
-pool:
- name: hosted-vm
  
 variables:
   buildConfiguration: "Release"
