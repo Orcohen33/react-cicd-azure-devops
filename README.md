@@ -1,70 +1,56 @@
-# Getting Started with Create React App
+# React CICD in Azure DevOps
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This repository contains a CI/CD pipeline configuration for a React application using Azure DevOps. The pipeline builds the React application, creates a Docker image, pushes the image to Azure Container Registry (ACR), and deploys the containerized application to an Azure App Service.
 
-## Available Scripts
+## Pipeline Overview
 
-In the project directory, you can run:
+The Azure DevOps pipeline is defined in the `azure-pipelines.yml` file, which consists of the following stages:
 
-### `npm start`
+1. **Build Stage**:
+  - Deploys the Azure Container Registry resource using an ARM template (`acr-temp-new.json`).
+  - Builds a Docker image for the React application using the `Dockerfile`.
+  - Pushes the Docker image to the Azure Container Registry.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+2. **Deploy Stage**:
+  - Deploys the Azure App Service resource using an ARM template (`app-svc-temp.json`).
+  - Deploys the Docker image from the Azure Container Registry to the Azure App Service.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Prerequisites
 
-### `npm test`
+Before running the pipeline, ensure that you have the following:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- An Azure subscription
+- An Azure Container Registry resource
+- An Azure App Service resource (or the pipeline will create one)
+- A Docker image for the React application
 
-### `npm run build`
+## Configuration
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The pipeline is configured with the following variables:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- `buildConfiguration`: Build configuration (e.g., "Release").
+- `location`: Azure region for resource deployment (e.g., "westeurope").
+- `acrHostName`: Hostname of the Azure Container Registry.
+- `acrName`: Name of the Azure Container Registry.
+- `rgName`: Name of the Azure Resource Group.
+- `containerName`: Name of the Docker container.
+- `appName`: Name of the Azure App Service.
+- `vmImageName`: Name of the Azure VM image for the build agent (e.g., "ubuntu-latest").
+- `dockerfilePath`: Path to the Dockerfile.
+- `tag`: Docker image tag (set to the Build ID).
+- `appSvcPlanName`: Name of the Azure App Service Plan.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Make sure to update these variables according to your environment and requirements.
 
-### `npm run eject`
+## Usage
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Configure the Azure DevOps pipeline by adding the `azure-pipelines.yml` file to your repository.
+2. Update the pipeline variables and Azure Resource Manager (ARM) templates (`acr-temp-new.json` and `app-svc-temp.json`) as needed.
+3. Commit and push your changes to the repository's `main` branch to trigger the pipeline.
+4. Monitor the pipeline execution in the Azure DevOps portal.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Upon successful completion, the React application will be deployed to the Azure App Service as a Docker container.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Contributing
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Contributions to this project are welcome. If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
